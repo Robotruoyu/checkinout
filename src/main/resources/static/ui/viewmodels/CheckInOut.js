@@ -150,8 +150,6 @@ var app = new Vue({
                 .catch(function (error) {
                     console.log(error);
                 });
-
-
         },
         getsignature() {
             const timestamp = Date.now();
