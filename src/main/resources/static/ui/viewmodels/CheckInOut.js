@@ -1,6 +1,5 @@
 
-const ticket = 'HoagFKDcsGMVCIY2vOjf9kVf7mKeAxUHuaEY4w-R73e6HtWxspsTKcL6SPtFmw9FotRNaEzxGO0qowetXxfRwQ';
-const token = '18_YpS8uGssCQiwI6bWu8ZwteME5Te6A1PawaSshSN9W05R85iecrnXOLvATb6y02hbAtJhPUQPfBDi6vH7QV6VPPr9kSSJPSog18WMyUE0Cddo-AN2jU0S3R2CkozIO-FlYJOJpstjZ6tPoXqmWJKjABAMZA';
+const ticket = 'HoagFKDcsGMVCIY2vOjf9kVf7mKeAxUHuaEY4w-R73fj-SDQnrMUrC7DWWYDU53L3c5gYQ7A4mRRvDD5EC52jA';
 
 // const ticket = '';
 // const token = '';
@@ -22,9 +21,9 @@ var signature = shaObj.getHash('HEX');
 wx.config({
     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
     appId: 'wx9c449aad8fc82170', // 必填，公众号的唯一标识
-    timestamp: '1548467738137', // 必填，生成签名的时间戳
-    nonceStr: '123456789abcdefg', // 必填，生成签名的随机串
-    signature: 'f9af98f659ccceb7bcaa04a7b6af37bfb7768586',// 必填，签名
+    timestamp: timestamp, // 必填，生成签名的时间戳
+    nonceStr: nonceStr, // 必填，生成签名的随机串
+    signature: signature,// 必填，签名
     jsApiList: [
         'checkJsApi',
         'chooseImage',
@@ -98,7 +97,7 @@ var app = new Vue({
                         longitude: res.longitude, // 经度，浮点数，范围为180 ~ -180。
                         name: '', // 位置名
                         address: '', // 地址详情说明
-                        scale: 20, // 地图缩放级别,整形值,范围从1~28。默认为最大
+                        scale: 15, // 地图缩放级别,整形值,范围从1~28。默认为最大
                         infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
                     });
                 },
@@ -154,7 +153,6 @@ var app = new Vue({
         getsignature() {
             const timestamp = Date.now();
             const nonceStr = Math.random.toString(16).substr(2);
-
             const urlStr = location.href;
             console.log(urlStr);
 
