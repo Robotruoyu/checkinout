@@ -1,9 +1,9 @@
 
-// const ticket = 'HoagFKDcsGMVCIY2vOjf9kVf7mKeAxUHuaEY4w-R73d9xYTbdg-Ju4E8gQ_xVbk6c9wXytvm6pdq2cerznYsdA';
-// const token = '18_5se5cWRZn-H6Zs8by5M7iPj35SJhOzyU-ZBqN7Lgooa2AmOvXPeTBGK9CWgZaQglDQbZA_3g6q7CWzOonRfsNybAmqpT6ysMDp-DWULipwPabl-157RTQ3KMI82osuaCmvUcTuwoAdp9Vs4WRLJcAEAZTR';
-const ticket = '';
-const token = '';
+const ticket = 'HoagFKDcsGMVCIY2vOjf9kVf7mKeAxUHuaEY4w-R73e6HtWxspsTKcL6SPtFmw9FotRNaEzxGO0qowetXxfRwQ';
+const token = '18_YpS8uGssCQiwI6bWu8ZwteME5Te6A1PawaSshSN9W05R85iecrnXOLvATb6y02hbAtJhPUQPfBDi6vH7QV6VPPr9kSSJPSog18WMyUE0Cddo-AN2jU0S3R2CkozIO-FlYJOJpstjZ6tPoXqmWJKjABAMZA';
 
+// const ticket = '';
+// const token = '';
 const timestamp = Date.now();
 const nonceStr = Math.random.toString(16).substr(2);
 
@@ -22,9 +22,9 @@ var signature = shaObj.getHash('HEX');
 wx.config({
     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
     appId: 'wx9c449aad8fc82170', // 必填，公众号的唯一标识
-    timestamp: '1548418052837', // 必填，生成签名的时间戳
+    timestamp: '1548467738137', // 必填，生成签名的时间戳
     nonceStr: '123456789abcdefg', // 必填，生成签名的随机串
-    signature: '3d7a7c2143803bc37cc4648af194a10a5b3f2512',// 必填，签名
+    signature: 'f9af98f659ccceb7bcaa04a7b6af37bfb7768586',// 必填，签名
     jsApiList: [
         'checkJsApi',
         'chooseImage',
@@ -39,7 +39,9 @@ wx.ready(function () {
 });
 wx.error(function (err) {
     console.log(err);
-    this.getToken();
+    // this.getToken();
+    // this.getTicket();
+    // this.getsignature();
     // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 });
 var app = new Vue({
@@ -48,13 +50,11 @@ var app = new Vue({
         message: 'Hello Vue!'
     },
     mounted() {
-        // this.getToken();
-        // this.getTicket();
+
     },
     methods: {
         handleCheckInOut() {
             console.log("handleCheckInOut");
-            // this.getToken();
         },
         checkJsApi() {
             console.log("checkJsApi");
@@ -118,6 +118,9 @@ var app = new Vue({
         },
         getToken() {
             console.log('getToken');
+
+
+
             axios.get('https://api.weixin.qq.com/cgi-bin/token', {
                 params: {
                     grant_type: 'client_credential',
@@ -127,7 +130,7 @@ var app = new Vue({
             })
                 .then(function (response) {
                     console.log(response);
-                    // token = response.token;
+                    token = response.token;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -142,11 +145,29 @@ var app = new Vue({
             })
                 .then(function (response) {
                     console.log(response);
-                    // ticket = response.ticket;
+                    ticket = response.ticket;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+
+
+        },
+        getsignature() {
+            const timestamp = Date.now();
+            const nonceStr = Math.random.toString(16).substr(2);
+
+            const urlStr = location.href;
+            console.log(urlStr);
+
+            const originalsignature = 'jsapi_ticket' + ticket
+                + 'noncestr' + nonceStr
+                + 'timestamp' + timestamp
+                + 'url' + urlStr;
+
+            var shaObj = new jsSHA('SHA-1', "TEXT");
+            shaObj.update(originalsignature);
+            var signature = shaObj.getHash('HEX');
         }
     }
 });
